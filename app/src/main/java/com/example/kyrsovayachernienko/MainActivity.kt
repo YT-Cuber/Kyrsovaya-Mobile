@@ -16,8 +16,11 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -303,7 +306,7 @@ fun Session1_4(controller: NavHostController) {
                 fontFamily = robotoFamily,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
-                    .padding(10.dp, 0.dp)
+                    .padding(6.dp, 0.dp)
                     .clickable() {
                         controller.navigate("Session2_2")
                     }
@@ -321,7 +324,10 @@ fun Session2_1(controller: NavHostController) {
         Font(R.font.roboto_medium, FontWeight.Medium),
         Font(R.font.roboto_bold, FontWeight.Bold)
     )
-    Column(Modifier.padding(20.dp) .fillMaxSize()) {
+    Column(
+        Modifier
+            .padding(20.dp)
+            .fillMaxSize()) {
         var login by remember { mutableStateOf("") }
         var phoneNumber by remember { mutableStateOf("") }
         var email by rememberSaveable { mutableStateOf("") }
@@ -329,6 +335,7 @@ fun Session2_1(controller: NavHostController) {
         var passwordVisible by rememberSaveable { mutableStateOf(false) }
         var confirmPassword by rememberSaveable { mutableStateOf("") }
         var confirmPasswordVisible by rememberSaveable { mutableStateOf(false) }
+        var checked by remember { mutableStateOf(false) }
 
         Text(text = "Create an account", fontSize = 24.sp, fontFamily = robotoFamily, fontWeight = FontWeight.Medium, color = Color(58, 58, 58, 255))
         Text(text = "Complete the sign up process to get started", fontSize = 14.sp, fontFamily = robotoFamily, color = Color(167, 167, 167, 255))
@@ -420,15 +427,14 @@ fun Session2_1(controller: NavHostController) {
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 trailingIcon = {
-                    val image = if (passwordVisible)
-                         Icons.Filled.Star
-                    else Icons.Filled.AccountBox
+                    val imagep = if (passwordVisible)
+                        Icons.Filled.Visibility
+                    else Icons.Filled.VisibilityOff
 
-                    // Please provide localized description for accessibility services
                     val description = if (passwordVisible) "Hide password" else "Show password"
 
                     IconButton(onClick = {passwordVisible = !passwordVisible}){
-                        Icon(imageVector  = image, description)
+                        Icon(imageVector  = imagep, description)
                     }
                 },
                 modifier = Modifier .fillMaxWidth()
@@ -455,8 +461,68 @@ fun Session2_1(controller: NavHostController) {
                     ) },
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                trailingIcon = {
+                    val imagecp = if (confirmPasswordVisible)
+                        Icons.Filled.Visibility
+                    else Icons.Filled.VisibilityOff
+
+                    val description = if (confirmPasswordVisible) "Hide password" else "Show password"
+
+                    IconButton(onClick = {confirmPasswordVisible = !confirmPasswordVisible}){
+                        Icon(imageVector  = imagecp, description)
+                    }
+                },
                 modifier = Modifier .fillMaxWidth()
             )
+        }
+        Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically, modifier = Modifier .fillMaxWidth()) {
+            Checkbox(checked = checked, onCheckedChange = { checked = it })
+            Text(text = "By ticking this box, you agree to our" + " Terms and conditions and private policy", color = Color(167, 167, 167, 255), fontSize = 12.sp, fontFamily = robotoFamily, textAlign = TextAlign.Center)
+
+        }
+        Row(horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.Bottom, modifier = Modifier
+            .fillMaxWidth() ) {
+            Button(onClick = { controller.navigate("Session2_1") }, shape = RectangleShape, colors = ButtonDefaults.buttonColors(Color(255, 255, 255, 0)),) {
+                Image(
+                    painter = painterResource(id = R.drawable.button_signup),
+                    contentDescription = "",
+                    contentScale = ContentScale.FillBounds,
+                    modifier = Modifier .fillMaxWidth()
+                )
+            }
+        }
+        Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.Bottom, modifier = Modifier .fillMaxWidth()) {
+            Text("Already have an account?",
+                fontSize = 14.sp,
+                color = Color(167,167,167),
+                fontFamily = robotoFamily,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(10.dp, 0.dp)
+            )
+            Text("Log in",
+                fontSize = 14.sp,
+                color = Color(5,96,250),
+                fontFamily = robotoFamily,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(6.dp, 0.dp)
+                    .clickable() {
+                        controller.navigate("Session2_2")
+                    }
+            )
+        }
+        Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.Bottom, modifier = Modifier .fillMaxWidth()) {
+            Text(
+                "or sign in using",
+                fontSize = 14.sp,
+                color = Color(167, 167, 167),
+                fontFamily = robotoFamily,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(0.dp, 0.dp, 4.dp, 0.dp)
+            )
+            Image(painter = painterResource(id = R.drawable.icons8_google_48), contentDescription = "", modifier = Modifier .clickable() {})
         }
     }
 }
