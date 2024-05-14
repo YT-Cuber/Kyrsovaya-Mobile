@@ -8,14 +8,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
@@ -26,7 +23,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,6 +40,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -52,7 +49,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -140,12 +136,14 @@ fun Session1_2(controller: NavHostController) {
                         Image(
                             painter = painterResource(id = R.drawable.button_skip),
                             contentDescription = "",
+                            contentScale = ContentScale.Crop
                         )
                     }
                     Button(onClick = { controller.navigate("Session1_3") }, shape = RectangleShape, colors = ButtonDefaults.buttonColors(Color(255, 255, 255, 0)),) {
                         Image(
                             painter = painterResource(id = R.drawable.button_next),
                             contentDescription = "",
+                            contentScale = ContentScale.Crop
                             
                         )
                     }
@@ -211,14 +209,14 @@ fun Session1_3(controller: NavHostController) {
                         Image(
                             painter = painterResource(id = R.drawable.button_skip),
                             contentDescription = "",
-                            contentScale = ContentScale.FillBounds
+                            contentScale = ContentScale.Crop
                         )
                     }
                     Button(onClick = { controller.navigate("Session1_4") }, shape = RectangleShape, colors = ButtonDefaults.buttonColors(Color(255, 255, 255, 0)),) {
                         Image(
                             painter = painterResource(id = R.drawable.button_next),
                             contentDescription = "",
-                            contentScale = ContentScale.FillBounds
+                            contentScale = ContentScale.Crop
                         )
                     }
                 }
@@ -246,7 +244,7 @@ fun Session1_4(controller: NavHostController) {
             Image(
                 painter = painterResource(id = R.drawable.session1_4_1),
                 contentDescription = "",
-                contentScale = ContentScale.FillWidth,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
             )
         }
@@ -283,7 +281,7 @@ fun Session1_4(controller: NavHostController) {
                         Image(
                             painter = painterResource(id = R.drawable.button_signup),
                             contentDescription = "",
-                            contentScale = ContentScale.FillBounds,
+                            contentScale = ContentScale.Crop,
                             modifier = Modifier .fillMaxWidth()
                         )
                     }
@@ -336,6 +334,7 @@ fun Session2_1(controller: NavHostController) {
         var confirmPassword by rememberSaveable { mutableStateOf("") }
         var confirmPasswordVisible by rememberSaveable { mutableStateOf(false) }
         var checked by remember { mutableStateOf(false) }
+        var allChecked by remember { mutableStateOf(false) }
 
         Text(text = "Create an account", fontSize = 24.sp, fontFamily = robotoFamily, fontWeight = FontWeight.Medium, color = Color(58, 58, 58, 255))
         Text(text = "Complete the sign up process to get started", fontSize = 14.sp, fontFamily = robotoFamily, color = Color(167, 167, 167, 255))
@@ -424,7 +423,7 @@ fun Session2_1(controller: NavHostController) {
                         fontFamily = robotoFamily,
                         modifier = Modifier .fillMaxWidth()
                     ) },
-                visualTransformation = PasswordVisualTransformation(),
+                visualTransformation =  if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 trailingIcon = {
                     val imagep = if (passwordVisible)
@@ -459,7 +458,7 @@ fun Session2_1(controller: NavHostController) {
                         fontFamily = robotoFamily,
                         modifier = Modifier .fillMaxWidth()
                     ) },
-                visualTransformation = PasswordVisualTransformation(),
+                visualTransformation =  if (confirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 trailingIcon = {
                     val imagecp = if (confirmPasswordVisible)
@@ -482,11 +481,12 @@ fun Session2_1(controller: NavHostController) {
         }
         Row(horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.Bottom, modifier = Modifier
             .fillMaxWidth() ) {
+            allChecked = !(login.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || phoneNumber.isEmpty() || email.isEmpty() || !checked)
             Button(onClick = { controller.navigate("Session2_1") }, shape = RectangleShape, colors = ButtonDefaults.buttonColors(Color(255, 255, 255, 0)),) {
                 Image(
-                    painter = painterResource(id = R.drawable.button_signup),
+                    painter = painterResource(id = if (allChecked) R.drawable.button_signup else R.drawable.button_signup_gray),
                     contentDescription = "",
-                    contentScale = ContentScale.FillBounds,
+                    contentScale = ContentScale.Crop,
                     modifier = Modifier .fillMaxWidth()
                 )
             }
@@ -536,7 +536,127 @@ fun Session2_2(controller: NavHostController) {
         Font(R.font.roboto_medium, FontWeight.Medium),
         Font(R.font.roboto_bold, FontWeight.Bold)
     )
+    Column(
+        Modifier
+            .padding(20.dp)
+            .fillMaxSize()) {
+        var email by rememberSaveable { mutableStateOf("") }
+        var password by rememberSaveable { mutableStateOf("") }
+        var passwordVisible by rememberSaveable { mutableStateOf(false) }
+        var checked by remember { mutableStateOf(false) }
+        var allChecked by remember { mutableStateOf(false) }
 
+        Text(text = "Welcome Back", fontSize = 24.sp, fontFamily = robotoFamily, fontWeight = FontWeight.Medium, color = Color(58, 58, 58, 255))
+        Text(text = "Fill in your email and password to continue", fontSize = 14.sp, fontFamily = robotoFamily, color = Color(167, 167, 167, 255))
+        Column(Modifier.padding(0.dp, 16.dp, 0.dp, 0.dp)) {
+            Text(
+                text = "Email Address",
+                fontSize = 14.sp,
+                fontFamily = robotoFamily,
+                fontWeight = FontWeight.Medium,
+                color = Color(167, 167, 167, 255),
+                modifier = Modifier .padding(0.dp, 16.dp, 0.dp, 0.dp)
+            )
+            OutlinedTextField(
+                value = email,
+                onValueChange = { email = it },
+                label = {
+                    Text(
+                        "***********@gmail.com",
+                        fontSize = 14.sp,
+                        color = Color(167, 167, 167, 255),
+                        fontFamily = robotoFamily,
+                        modifier = Modifier .fillMaxWidth()
+                    ) },
+                modifier = Modifier .fillMaxWidth()
+            )
+
+            Text(
+                text = "Password",
+                fontSize = 14.sp,
+                fontFamily = robotoFamily,
+                fontWeight = FontWeight.Medium,
+                color = Color(167, 167, 167, 255),
+                modifier = Modifier .padding(0.dp, 16.dp, 0.dp, 0.dp)
+            )
+            OutlinedTextField(
+                value = password,
+                onValueChange = { password = it },
+                label = {
+                    Text(
+                        "**********",
+                        fontSize = 14.sp,
+                        color = Color(167, 167, 167, 255),
+                        fontFamily = robotoFamily,
+                        modifier = Modifier .fillMaxWidth()
+                    ) },
+                visualTransformation =  if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                trailingIcon = {
+                    val imagep = if (passwordVisible)
+                        Icons.Filled.Visibility
+                    else Icons.Filled.VisibilityOff
+
+                    val description = if (passwordVisible) "Hide password" else "Show password"
+
+                    IconButton(onClick = {passwordVisible = !passwordVisible}){
+                        Icon(imageVector  = imagep, description)
+                    }
+                },
+                modifier = Modifier .fillMaxWidth()
+            )
+        }
+        Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically, modifier = Modifier .fillMaxWidth()) {
+            Checkbox(checked = checked, onCheckedChange = { checked = it }, )
+            Text(text = "Remember password", color = Color(167, 167, 167, 255), fontSize = 12.sp, fontFamily = robotoFamily, textAlign = TextAlign.Start)
+            Text(text = "Forgot Password?", color = Color(5, 96, 250, 255), fontSize = 12.sp, fontFamily = robotoFamily, textAlign = TextAlign.End, modifier = Modifier .clickable() {})
+        }
+        Row(horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.Bottom, modifier = Modifier
+            .fillMaxWidth() ) {
+            allChecked = !(password.isEmpty() || email.isEmpty())
+            Button(onClick = { controller.navigate("Session2_1") }, shape = RectangleShape, colors = ButtonDefaults.buttonColors(Color(255, 255, 255, 0)),) {
+                Image(
+                    painter = painterResource(id = if (allChecked) R.drawable.button_signup else R.drawable.button_signup_gray),
+                    contentDescription = "",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier .fillMaxWidth()
+                )
+            }
+        }
+        Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.Bottom, modifier = Modifier .fillMaxWidth()) {
+            Text("Already have an account?",
+                fontSize = 14.sp,
+                color = Color(167,167,167),
+                fontFamily = robotoFamily,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(10.dp, 0.dp)
+            )
+            Text("Log in",
+                fontSize = 14.sp,
+                color = Color(5,96,250),
+                fontFamily = robotoFamily,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(6.dp, 0.dp)
+                    .clickable() {
+                        controller.navigate("Session2_2")
+                    }
+            )
+        }
+        Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.Bottom, modifier = Modifier .fillMaxWidth()) {
+            Text(
+                "or sign in using",
+                fontSize = 14.sp,
+                color = Color(167, 167, 167),
+                fontFamily = robotoFamily,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(0.dp, 0.dp, 4.dp, 0.dp)
+            )
+            Image(painter = painterResource(id = R.drawable.icons8_google_48), contentDescription = "", modifier = Modifier .clickable() {})
+        }
+    }
 }
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
@@ -546,7 +666,7 @@ fun Preview() {
 //        delay(1200)
 //        controller.navigate("Session1_2")
 //    }
-    NavHost(navController = controller, startDestination = "Session2_1") {
+    NavHost(navController = controller, startDestination = "Session2_2") {
         composable("Session1_1") { Session1_1(controller) }
         composable("Session1_2") { Session1_2(controller) }
         composable("Session1_3") { Session1_3(controller) }
