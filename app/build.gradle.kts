@@ -53,8 +53,10 @@ android {
 dependencies {
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
     ksp("androidx.room:room-compiler:2.6.1")
     implementation("androidx.navigation:navigation-compose:2.7.7")
+    implementation ("androidx.compose.material:material-icons-extended:1.4.3")
 
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")

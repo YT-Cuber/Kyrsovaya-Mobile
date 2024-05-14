@@ -1,41 +1,46 @@
 package com.example.kyrsovayachernienko
 
-import android.graphics.Paint.Align
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -248,7 +253,7 @@ fun Session1_4(controller: NavHostController) {
             Column(modifier = Modifier .fillMaxSize()) {
                 Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically, modifier = Modifier
                     .fillMaxWidth()
-                    .padding(12.dp)) {
+                    .padding(12.dp, 12.dp, 12.dp, 0.dp)) {
                     Column {
                         Text("Real-time Tracking",
                             fontSize = 24.sp,
@@ -270,7 +275,7 @@ fun Session1_4(controller: NavHostController) {
                 }
                 Row(horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.Bottom, modifier = Modifier
                     .fillMaxSize()
-                    .padding(5.dp, 0.dp, 5.dp, 30.dp)) {
+                    .padding(5.dp, 0.dp, 5.dp, 15.dp)) {
                     Button(onClick = { controller.navigate("Session2_1") }, shape = RectangleShape, colors = ButtonDefaults.buttonColors(Color(255, 255, 255, 0)),) {
                         Image(
                             painter = painterResource(id = R.drawable.button_signup),
@@ -280,44 +285,207 @@ fun Session1_4(controller: NavHostController) {
                         )
                     }
                 }
-                Row {
-                    Text("Already have an account?",
-                        fontSize = 16.sp,
-                        color = Color(58,58,58),
-                        fontFamily = robotoFamily,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .padding(10.dp, 0.dp)
-                    )
-                    Button(onClick = { controller.navigate("Session2_1") }, shape = RectangleShape, colors = ButtonDefaults.buttonColors(Color(255, 255, 255, 0)),) {
-                        Text("Sign in",
-                            fontSize = 16.sp,
-                            color = Color(58,58,58),
-                            fontFamily = robotoFamily,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier
-                                .padding(10.dp, 0.dp)
-                        )
-                    }
-                }
             }
+        }
+        Row(horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.Bottom, modifier = Modifier
+            ) {
+            Text("Already have an account?",
+                fontSize = 14.sp,
+                color = Color(167,167,167),
+                fontFamily = robotoFamily,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(10.dp, 0.dp)
+            )
+            Text("Log in",
+                fontSize = 14.sp,
+                color = Color(5,96,250),
+                fontFamily = robotoFamily,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(10.dp, 0.dp)
+                    .clickable() {
+                        controller.navigate("Session2_2")
+                    }
+            )
         }
     }
 }
 
+@Composable
+fun Session2_1(controller: NavHostController) {
+    val robotoFamily = FontFamily(
+        Font(R.font.roboto_light, FontWeight.Light),
+        Font(R.font.roboto_regular, FontWeight.Normal),
+        Font(R.font.roboto_italic, FontWeight.Normal, FontStyle.Italic),
+        Font(R.font.roboto_medium, FontWeight.Medium),
+        Font(R.font.roboto_bold, FontWeight.Bold)
+    )
+    Column(Modifier.padding(20.dp) .fillMaxSize()) {
+        var login by remember { mutableStateOf("") }
+        var phoneNumber by remember { mutableStateOf("") }
+        var email by rememberSaveable { mutableStateOf("") }
+        var password by rememberSaveable { mutableStateOf("") }
+        var passwordVisible by rememberSaveable { mutableStateOf(false) }
+        var confirmPassword by rememberSaveable { mutableStateOf("") }
+        var confirmPasswordVisible by rememberSaveable { mutableStateOf(false) }
 
+        Text(text = "Create an account", fontSize = 24.sp, fontFamily = robotoFamily, fontWeight = FontWeight.Medium, color = Color(58, 58, 58, 255))
+        Text(text = "Complete the sign up process to get started", fontSize = 14.sp, fontFamily = robotoFamily, color = Color(167, 167, 167, 255))
+        Column(Modifier.padding(0.dp, 16.dp, 0.dp, 0.dp)) {
+            Text(
+                text = "Full name",
+                fontSize = 14.sp,
+                fontFamily = robotoFamily,
+                fontWeight = FontWeight.Medium,
+                color = Color(167, 167, 167, 255)
+            )
+            OutlinedTextField(
+                value = login,
+                onValueChange = { login = it },
+                label = {
+                    Text(
+                        "Ivanov Ivan",
+                        fontSize = 14.sp,
+                        color = Color(167, 167, 167, 255),
+                        fontFamily = robotoFamily,
+                        modifier = Modifier .fillMaxWidth()
+                    ) },
+                modifier = Modifier .fillMaxWidth()
+            )
+
+            Text(
+                text = "Phone Number",
+                fontSize = 14.sp,
+                fontFamily = robotoFamily,
+                fontWeight = FontWeight.Medium,
+                color = Color(167, 167, 167, 255),
+                modifier = Modifier .padding(0.dp, 16.dp, 0.dp, 0.dp)
+            )
+            OutlinedTextField(
+                value = phoneNumber,
+                onValueChange = { phoneNumber = it },
+                label = {
+                    Text(
+                        "+7 (999) 999-99-99",
+                        fontSize = 14.sp,
+                        color = Color(167, 167, 167, 255),
+                        fontFamily = robotoFamily,
+                        modifier = Modifier .fillMaxWidth()
+                    ) },
+                modifier = Modifier .fillMaxWidth()
+            )
+
+            Text(
+                text = "Email Address",
+                fontSize = 14.sp,
+                fontFamily = robotoFamily,
+                fontWeight = FontWeight.Medium,
+                color = Color(167, 167, 167, 255),
+                modifier = Modifier .padding(0.dp, 16.dp, 0.dp, 0.dp)
+            )
+            OutlinedTextField(
+                value = email,
+                onValueChange = { email = it },
+                label = {
+                    Text(
+                        "***********@gmail.com",
+                        fontSize = 14.sp,
+                        color = Color(167, 167, 167, 255),
+                        fontFamily = robotoFamily,
+                        modifier = Modifier .fillMaxWidth()
+                    ) },
+                modifier = Modifier .fillMaxWidth()
+            )
+
+            Text(
+                text = "Password",
+                fontSize = 14.sp,
+                fontFamily = robotoFamily,
+                fontWeight = FontWeight.Medium,
+                color = Color(167, 167, 167, 255),
+                modifier = Modifier .padding(0.dp, 16.dp, 0.dp, 0.dp)
+            )
+            OutlinedTextField(
+                value = password,
+                onValueChange = { password = it },
+                label = {
+                    Text(
+                        "**********",
+                        fontSize = 14.sp,
+                        color = Color(167, 167, 167, 255),
+                        fontFamily = robotoFamily,
+                        modifier = Modifier .fillMaxWidth()
+                    ) },
+                visualTransformation = PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                trailingIcon = {
+                    val image = if (passwordVisible)
+                         Icons.Filled.Star
+                    else Icons.Filled.AccountBox
+
+                    // Please provide localized description for accessibility services
+                    val description = if (passwordVisible) "Hide password" else "Show password"
+
+                    IconButton(onClick = {passwordVisible = !passwordVisible}){
+                        Icon(imageVector  = image, description)
+                    }
+                },
+                modifier = Modifier .fillMaxWidth()
+            )
+
+            Text(
+                text = "Confirm Password",
+                fontSize = 14.sp,
+                fontFamily = robotoFamily,
+                fontWeight = FontWeight.Medium,
+                color = Color(167, 167, 167, 255),
+                modifier = Modifier .padding(0.dp, 16.dp, 0.dp, 0.dp)
+            )
+            OutlinedTextField(
+                value = confirmPassword,
+                onValueChange = { confirmPassword = it },
+                label = {
+                    Text(
+                        "**********",
+                        fontSize = 14.sp,
+                        color = Color(167, 167, 167, 255),
+                        fontFamily = robotoFamily,
+                        modifier = Modifier .fillMaxWidth()
+                    ) },
+                visualTransformation = PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                modifier = Modifier .fillMaxWidth()
+            )
+        }
+    }
+}
+
+@Composable
+fun Session2_2(controller: NavHostController) {
+    val robotoFamily = FontFamily(
+        Font(R.font.roboto_light, FontWeight.Light),
+        Font(R.font.roboto_regular, FontWeight.Normal),
+        Font(R.font.roboto_italic, FontWeight.Normal, FontStyle.Italic),
+        Font(R.font.roboto_medium, FontWeight.Medium),
+        Font(R.font.roboto_bold, FontWeight.Bold)
+    )
+
+}
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun Preview() {
     val controller = rememberNavController()
-    LaunchedEffect(key1 = true) {
-        delay(1200)
-        controller.navigate("Session1_2")
-    }
-    NavHost(navController = controller, startDestination = "Session1_4") {
+//    LaunchedEffect(key1 = true) {
+//        delay(1200)
+//        controller.navigate("Session1_2")
+//    }
+    NavHost(navController = controller, startDestination = "Session2_1") {
         composable("Session1_1") { Session1_1(controller) }
         composable("Session1_2") { Session1_2(controller) }
         composable("Session1_3") { Session1_3(controller) }
         composable("Session1_4") { Session1_4(controller) }
+        composable("Session2_1") { Session2_1(controller) }
+        composable("Session2_2") { Session2_2(controller) }
     }
 }
