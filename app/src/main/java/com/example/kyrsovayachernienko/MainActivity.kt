@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
@@ -49,6 +50,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import kotlinx.coroutines.delay
+import androidx.compose.runtime.LaunchedEffect as LaunchedEffect1
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -132,21 +135,26 @@ fun Session1_2(controller: NavHostController) {
                 Row(horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.Bottom, modifier = Modifier
                     .fillMaxSize()
                     .padding(5.dp, 0.dp, 5.dp, 30.dp)) {
-                    Button(onClick = { controller.navigate("Session1_4") }, shape = RectangleShape, colors = ButtonDefaults.buttonColors(Color(255, 255, 255, 0)),) {
+//                    Button(onClick = { controller.navigate("Session1_4") }, shape = RectangleShape, colors = ButtonDefaults.buttonColors(Color(255, 255, 255, 0)),) {
                         Image(
                             painter = painterResource(id = R.drawable.button_skip),
                             contentDescription = "",
-                            contentScale = ContentScale.Crop
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier .clickable {
+                                controller.navigate("Session1_4")
+                            }
                         )
-                    }
-                    Button(onClick = { controller.navigate("Session1_3") }, shape = RectangleShape, colors = ButtonDefaults.buttonColors(Color(255, 255, 255, 0)),) {
+//                    }
+//                    Button(onClick = { controller.navigate("Session1_3") }, shape = RectangleShape, colors = ButtonDefaults.buttonColors(Color(255, 255, 255, 0)),) {
                         Image(
                             painter = painterResource(id = R.drawable.button_next),
                             contentDescription = "",
-                            contentScale = ContentScale.Crop
-                            
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier .clickable {
+                                controller.navigate("Session1_3")
+                            }
                         )
-                    }
+//                    }
                 }
             }
         }
@@ -205,20 +213,26 @@ fun Session1_3(controller: NavHostController) {
                 Row(horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.Bottom, modifier = Modifier
                     .fillMaxSize()
                     .padding(5.dp, 0.dp, 5.dp, 30.dp)) {
-                    Button(onClick = { controller.navigate("Session1_4") }, shape = RectangleShape, colors = ButtonDefaults.buttonColors(Color(255, 255, 255, 0)),) {
+//                    Button(onClick = { controller.navigate("Session1_4") }, shape = RectangleShape, colors = ButtonDefaults.buttonColors(Color(255, 255, 255, 0)),) {
                         Image(
                             painter = painterResource(id = R.drawable.button_skip),
                             contentDescription = "",
-                            contentScale = ContentScale.Crop
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier .clickable {
+                                controller.navigate("Session1_4")
+                            }
                         )
-                    }
-                    Button(onClick = { controller.navigate("Session1_4") }, shape = RectangleShape, colors = ButtonDefaults.buttonColors(Color(255, 255, 255, 0)),) {
+//                    }
+//                    Button(onClick = { controller.navigate("Session1_4") }, shape = RectangleShape, colors = ButtonDefaults.buttonColors(Color(255, 255, 255, 0)),) {
                         Image(
                             painter = painterResource(id = R.drawable.button_next),
                             contentDescription = "",
-                            contentScale = ContentScale.Crop
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier .clickable {
+                                controller.navigate("Session1_4")
+                            }
                         )
-                    }
+//                    }
                 }
             }
         }
@@ -277,14 +291,18 @@ fun Session1_4(controller: NavHostController) {
                 Row(horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.Bottom, modifier = Modifier
                     .fillMaxSize()
                     .padding(5.dp, 0.dp, 5.dp, 15.dp)) {
-                    Button(onClick = { controller.navigate("Session2_1") }, shape = RectangleShape, colors = ButtonDefaults.buttonColors(Color(255, 255, 255, 0)),) {
+//                    Button(onClick = { controller.navigate("Session2_1") }, shape = RectangleShape, colors = ButtonDefaults.buttonColors(Color(255, 255, 255, 0)),) {
                         Image(
                             painter = painterResource(id = R.drawable.button_signup),
                             contentDescription = "",
                             contentScale = ContentScale.Crop,
-                            modifier = Modifier .fillMaxWidth()
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    controller.navigate("Session2_1")
+                                }
                         )
-                    }
+//                    }
                 }
             }
         }
@@ -305,7 +323,7 @@ fun Session1_4(controller: NavHostController) {
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .padding(6.dp, 0.dp)
-                    .clickable() {
+                    .clickable {
                         controller.navigate("Session2_2")
                     }
             )
@@ -477,19 +495,25 @@ fun Session2_1(controller: NavHostController) {
         Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically, modifier = Modifier .fillMaxWidth()) {
             Checkbox(checked = checked, onCheckedChange = { checked = it })
             Text(text = "By ticking this box, you agree to our" + " Terms and conditions and private policy", color = Color(167, 167, 167, 255), fontSize = 12.sp, fontFamily = robotoFamily, textAlign = TextAlign.Center)
-
         }
         Row(horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.Bottom, modifier = Modifier
             .fillMaxWidth() ) {
             allChecked = !(login.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || phoneNumber.isEmpty() || email.isEmpty() || !checked)
-            Button(onClick = { controller.navigate("Session2_1") }, shape = RectangleShape, colors = ButtonDefaults.buttonColors(Color(255, 255, 255, 0)),) {
+//            Button(onClick = { controller.navigate("Session2_1") }, shape = RectangleShape, colors = ButtonDefaults.buttonColors(Color(255, 255, 255, 0)),) {
                 Image(
                     painter = painterResource(id = if (allChecked) R.drawable.button_signup else R.drawable.button_signup_gray),
                     contentDescription = "",
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier .fillMaxWidth()
+                    modifier = Modifier
+                        .padding(0.dp, 16.dp, 0.dp, 8.dp)
+                        .fillMaxWidth()
+                        .clickable {
+                            if (allChecked) {
+                                controller.navigate("Session2_2")
+                            }
+                        }
                 )
-            }
+//            }
         }
         Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.Bottom, modifier = Modifier .fillMaxWidth()) {
             Text("Already have an account?",
@@ -500,14 +524,14 @@ fun Session2_1(controller: NavHostController) {
                 modifier = Modifier
                     .padding(10.dp, 0.dp)
             )
-            Text("Log in",
+            Text("Sign in",
                 fontSize = 14.sp,
                 color = Color(5,96,250),
                 fontFamily = robotoFamily,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .padding(6.dp, 0.dp)
-                    .clickable() {
+                    .clickable {
                         controller.navigate("Session2_2")
                     }
             )
@@ -522,7 +546,9 @@ fun Session2_1(controller: NavHostController) {
                 modifier = Modifier
                     .padding(0.dp, 0.dp, 4.dp, 0.dp)
             )
-            Image(painter = painterResource(id = R.drawable.icons8_google_48), contentDescription = "", modifier = Modifier .clickable() {})
+            Image(painter = painterResource(id = R.drawable.icons8_google_48), contentDescription = "", modifier = Modifier
+                .clickable {}
+                .size(18.dp))
         }
     }
 }
@@ -538,7 +564,7 @@ fun Session2_2(controller: NavHostController) {
     )
     Column(
         Modifier
-            .padding(20.dp)
+            .padding(20.dp, 80.dp, 20.dp, 20.dp)
             .fillMaxSize()) {
         var email by rememberSaveable { mutableStateOf("") }
         var password by rememberSaveable { mutableStateOf("") }
@@ -606,24 +632,51 @@ fun Session2_2(controller: NavHostController) {
                 modifier = Modifier .fillMaxWidth()
             )
         }
-        Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically, modifier = Modifier .fillMaxWidth()) {
-            Checkbox(checked = checked, onCheckedChange = { checked = it }, )
-            Text(text = "Remember password", color = Color(167, 167, 167, 255), fontSize = 12.sp, fontFamily = robotoFamily, textAlign = TextAlign.Start)
-            Text(text = "Forgot Password?", color = Color(5, 96, 250, 255), fontSize = 12.sp, fontFamily = robotoFamily, textAlign = TextAlign.End, modifier = Modifier .clickable() {})
-        }
+            Row(
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Checkbox(checked = checked, onCheckedChange = { checked = it })
+                Text(
+                    text = "Remember password",
+                    color = Color(167, 167, 167, 255),
+                    fontSize = 12.sp,
+                    fontFamily = robotoFamily,
+                    textAlign = TextAlign.Start
+                )
+                Row(
+                    horizontalArrangement = Arrangement.End,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = "Forgot Password?",
+                        color = Color(5, 96, 250, 255),
+                        fontSize = 12.sp,
+                        fontFamily = robotoFamily,
+                        textAlign = TextAlign.End,
+                        modifier = Modifier.clickable { controller.navigate("Session2_3") })
+                }
+            }
+
         Row(horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.Bottom, modifier = Modifier
             .fillMaxWidth() ) {
             allChecked = !(password.isEmpty() || email.isEmpty())
-            Button(onClick = { controller.navigate("Session2_1") }, shape = RectangleShape, colors = ButtonDefaults.buttonColors(Color(255, 255, 255, 0)),) {
+//            Button(onClick = { controller.navigate("Session2_1") }, shape = RectangleShape, colors = ButtonDefaults.buttonColors(Color(255, 255, 255, 0)),) {
                 Image(
-                    painter = painterResource(id = if (allChecked) R.drawable.button_signup else R.drawable.button_signup_gray),
+                    painter = painterResource(id = if (allChecked) R.drawable.button_login else R.drawable.button_login_gray),
                     contentDescription = "",
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier .fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            if (allChecked) { controller.navigate("Session3_1") }
+                        }
                 )
-            }
+//            }
         }
-        Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.Bottom, modifier = Modifier .fillMaxWidth()) {
+        Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.Bottom, modifier = Modifier .fillMaxWidth() .padding(0.dp, 10.dp, 0.dp, 0.dp)) {
             Text("Already have an account?",
                 fontSize = 14.sp,
                 color = Color(167,167,167),
@@ -632,14 +685,14 @@ fun Session2_2(controller: NavHostController) {
                 modifier = Modifier
                     .padding(10.dp, 0.dp)
             )
-            Text("Log in",
+            Text("Sign up",
                 fontSize = 14.sp,
                 color = Color(5,96,250),
                 fontFamily = robotoFamily,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .padding(6.dp, 0.dp)
-                    .clickable() {
+                    .clickable {
                         controller.navigate("Session2_2")
                     }
             )
@@ -654,24 +707,147 @@ fun Session2_2(controller: NavHostController) {
                 modifier = Modifier
                     .padding(0.dp, 0.dp, 4.dp, 0.dp)
             )
-            Image(painter = painterResource(id = R.drawable.icons8_google_48), contentDescription = "", modifier = Modifier .clickable() {})
+            Image(painter = painterResource(id = R.drawable.icons8_google_48), contentDescription = "", modifier = Modifier
+                .clickable {}
+                .size(18.dp))
         }
     }
 }
+
+@Composable
+fun Session2_3(controller: NavHostController) {
+    val robotoFamily = FontFamily(
+        Font(R.font.roboto_light, FontWeight.Light),
+        Font(R.font.roboto_regular, FontWeight.Normal),
+        Font(R.font.roboto_italic, FontWeight.Normal, FontStyle.Italic),
+        Font(R.font.roboto_medium, FontWeight.Medium),
+        Font(R.font.roboto_bold, FontWeight.Bold)
+    )
+    Column(
+        Modifier
+            .padding(20.dp, 80.dp, 20.dp, 20.dp)
+            .fillMaxSize()
+    ) {
+        var email by rememberSaveable { mutableStateOf("") }
+        var allChecked by remember { mutableStateOf(false) }
+
+        Text(
+            text = "Forgot Password",
+            fontSize = 24.sp,
+            fontFamily = robotoFamily,
+            fontWeight = FontWeight.Medium,
+            color = Color(58, 58, 58, 255)
+        )
+        Text(
+            text = "Enter your email address",
+            fontSize = 14.sp,
+            fontFamily = robotoFamily,
+            color = Color(167, 167, 167, 255)
+        )
+        Column(Modifier.padding(0.dp, 16.dp, 0.dp, 0.dp)) {
+            Text(
+                text = "Email Address",
+                fontSize = 14.sp,
+                fontFamily = robotoFamily,
+                fontWeight = FontWeight.Medium,
+                color = Color(167, 167, 167, 255),
+                modifier = Modifier.padding(0.dp, 16.dp, 0.dp, 0.dp)
+            )
+            OutlinedTextField(
+                value = email,
+                onValueChange = { email = it },
+                label = {
+                    Text(
+                        "***********@gmail.com",
+                        fontSize = 14.sp,
+                        color = Color(167, 167, 167, 255),
+                        fontFamily = robotoFamily,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                },
+                modifier = Modifier.fillMaxWidth()
+            )
+            Row(horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.Bottom, modifier = Modifier
+                .fillMaxWidth() .padding(0.dp, 60.dp, 0.dp, 20.dp)) {
+                allChecked = email.isNotEmpty()
+                Image(
+                    painter = painterResource(id = if (allChecked) R.drawable.button_sengotp else R.drawable.button_sengotp_gray),
+                    contentDescription = "",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            if (allChecked) { controller.navigate("Session3_1") }
+                        }
+                )
+            }
+            Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.Bottom, modifier = Modifier .fillMaxWidth() .padding(0.dp, 10.dp, 0.dp, 0.dp)) {
+                Text("Remember password? Back to ",
+                    fontSize = 14.sp,
+                    color = Color(167,167,167),
+                    fontFamily = robotoFamily,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .padding(10.dp, 0.dp)
+                )
+                Text("Sign in",
+                    fontSize = 14.sp,
+                    color = Color(5,96,250),
+                    fontFamily = robotoFamily,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .padding(6.dp, 0.dp)
+                        .clickable {
+                            controller.navigate("Session2_2")
+                        }
+                )
+            }
+        }
+    }
+}
+
+
+@Composable
+fun Session2_4(controller: NavHostController) {
+    val robotoFamily = FontFamily(
+        Font(R.font.roboto_light, FontWeight.Light),
+        Font(R.font.roboto_regular, FontWeight.Normal),
+        Font(R.font.roboto_italic, FontWeight.Normal, FontStyle.Italic),
+        Font(R.font.roboto_medium, FontWeight.Medium),
+        Font(R.font.roboto_bold, FontWeight.Bold)
+    )
+
+}
+
+@Composable
+fun Session2_5(controller: NavHostController) {
+    val robotoFamily = FontFamily(
+        Font(R.font.roboto_light, FontWeight.Light),
+        Font(R.font.roboto_regular, FontWeight.Normal),
+        Font(R.font.roboto_italic, FontWeight.Normal, FontStyle.Italic),
+        Font(R.font.roboto_medium, FontWeight.Medium),
+        Font(R.font.roboto_bold, FontWeight.Bold)
+    )
+
+}
+
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun Preview() {
     val controller = rememberNavController()
-//    LaunchedEffect(key1 = true) {
-//        delay(1200)
-//        controller.navigate("Session1_2")
-//    }
-    NavHost(navController = controller, startDestination = "Session2_2") {
+    LaunchedEffect1(key1 = true) {
+        delay(1200)
+        controller.navigate("Session1_2")
+    }
+    NavHost(navController = controller, startDestination = "Session2_3") {
         composable("Session1_1") { Session1_1(controller) }
         composable("Session1_2") { Session1_2(controller) }
         composable("Session1_3") { Session1_3(controller) }
         composable("Session1_4") { Session1_4(controller) }
         composable("Session2_1") { Session2_1(controller) }
         composable("Session2_2") { Session2_2(controller) }
+        composable("Session2_3") { Session2_3(controller) }
+        composable("Session2_4") { Session2_4(controller) }
+        composable("Session2_5") { Session2_5(controller) }
     }
 }
