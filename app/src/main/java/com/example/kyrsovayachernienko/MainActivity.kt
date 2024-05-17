@@ -33,6 +33,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -76,7 +77,29 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Preview()
+            val controller = rememberNavController()
+            LaunchedEffect1(key1 = true) {
+                delay(1200)
+                controller.navigate("Session1_2")
+            }
+            NavHost(navController = controller, startDestination = "Session1_1") {
+                composable("Session1_1") { Session1_1(controller) }
+                composable("Session1_2") { Session1_2(controller) }
+                composable("Session1_3") { Session1_3(controller) }
+                composable("Session1_4") { Session1_4(controller) }
+                composable("Session2_1") { Session2_1(controller) }
+                composable("Session2_2") { Session2_2(controller) }
+                composable("Session2_3") { Session2_3(controller) }
+                composable("Session2_4") { Session2_4(controller) }
+                composable("Session2_5") { Session2_5(controller) }
+                composable("Session3_1") { Session3_1(controller) }
+                composable("Session3_2") { Session3_2(controller) }
+                composable("Session3_3") { Session3_3(controller) }
+                composable("Session3_4") { Session3_4(controller) }
+                composable("Session3_5") { Session3_5(controller) }
+                composable("Session3_6") { Session3_6(controller) }
+                composable("Session3_7") { Session3_7(controller) }
+            }
         }
     }
 }
@@ -1056,7 +1079,7 @@ fun Session3_2(controller: NavHostController) {
                 horizontalArrangement = Arrangement.SpaceBetween)
             {
                 Image(
-                    painter = ColorPainter(Color.DarkGray),
+                    painter = painterResource(id = R.drawable.profileimg),
                     modifier = Modifier
                         .size(60.dp)
                         .clip(CircleShape)
@@ -1175,7 +1198,7 @@ fun Session3_2(controller: NavHostController) {
             Modifier
                 .padding(bottom = 10.dp)
                 .weight(0.1f)
-                .clickable {controller.navigate("Session3_4")}
+                .clickable { controller.navigate("Session3_4") }
                 .shadow(elevation = 3.dp),
             verticalAlignment = Alignment.CenterVertically)
         {
@@ -1212,7 +1235,7 @@ fun Session3_2(controller: NavHostController) {
             Modifier
                 .padding(bottom = 10.dp)
                 .weight(0.1f)
-                .clickable {controller.navigate("Session3_3")}
+                .clickable { controller.navigate("Session3_3") }
                 .shadow(elevation = 3.dp),
             verticalAlignment = Alignment.CenterVertically)
         {
@@ -1526,7 +1549,8 @@ fun Session3_5(controller: NavHostController) {
                 .fillMaxSize(),
             verticalArrangement = Arrangement.Top)
         {
-            Column() {
+            Column(Modifier
+                .weight(0.3f)) {
                 Row(verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Start,
                     modifier = Modifier
@@ -1541,74 +1565,108 @@ fun Session3_5(controller: NavHostController) {
                         fontWeight = FontWeight.Medium,
                         fontSize = 14.sp)
                 }
-                TextField(
-                    value = o_address, onValueChange = { o_address = it },
-                    label = {
-                        Text(
-                            text = "Address",
-                            fontFamily = robotoFamily,
-                            fontWeight = FontWeight.Medium,
-                            fontSize = 12.sp,
-                            color = Color.Gray
-                        )
-                    },
-                    modifier = Modifier
+                Column(
+                    Modifier
                         .fillMaxWidth()
-                        .height(32.dp),
-                    singleLine = true,
-//                    colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.White)
-                )
-                TextField(
-                    value = o_state, onValueChange = { o_state = it },
-                    label = {
-                        Text(
-                            text = "State,Country",
-                            fontFamily = robotoFamily,
-                            fontWeight = FontWeight.Medium,
-                            fontSize = 12.sp,
-                            color = Color.Gray
+                        .padding(top = 4.dp)) {
+                    TextField(
+                        value = o_address, onValueChange = { o_address = it },
+                        label = {
+                            Text(
+                                text = "Address",
+                                fontFamily = robotoFamily,
+                                fontWeight = FontWeight.Medium,
+                                fontSize = 12.sp,
+                                color = Color.Gray,
+
+                                )
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(0.1f)
+                            .padding(top = 4.dp, bottom = 4.dp),
+                        singleLine = true,
+                        colors = TextFieldDefaults.colors(
+                            unfocusedContainerColor = Color.White,
+                            unfocusedTextColor = Color.White,
+                            focusedContainerColor = Color.White,
+                            focusedTextColor = Color.White,
                         )
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(32.dp),
-                    singleLine = true,
 //                    colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.White)
-                )
-                TextField(
-                    value = o_phone, onValueChange = { o_phone = it },
-                    label = {
-                        Text(
-                            text = "Phone number",
-                            fontFamily = robotoFamily,
-                            fontWeight = FontWeight.Medium,
-                            fontSize = 12.sp,
-                            color = Color.Gray
+                    )
+                    TextField(
+                        value = o_state, onValueChange = { o_state = it },
+                        label = {
+                            Text(
+                                text = "State,Country",
+                                fontFamily = robotoFamily,
+                                fontWeight = FontWeight.Medium,
+                                fontSize = 12.sp,
+                                color = Color.Gray
+                            )
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(0.1f)
+                            .padding(top = 4.dp, bottom = 4.dp),
+                        singleLine = true,
+                        colors = TextFieldDefaults.colors(
+                            unfocusedContainerColor = Color.White,
+                            unfocusedTextColor = Color.White,
+                            focusedContainerColor = Color.White,
+                            focusedTextColor = Color.White,
                         )
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(32.dp),
-                    singleLine = true,
 //                    colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.White)
-                )
-                TextField(
-                    value = o_others, onValueChange = { o_others = it },
-                    label = {
-                        Text(
-                            text = "Others",
-                            fontFamily = robotoFamily,
-                            fontWeight = FontWeight.Medium,
-                            fontSize = 12.sp,
-                            color = Color.Gray
+                    )
+                    TextField(
+                        value = o_phone, onValueChange = { o_phone = it },
+                        label = {
+                            Text(
+                                text = "Phone number",
+                                fontFamily = robotoFamily,
+                                fontWeight = FontWeight.Medium,
+                                fontSize = 12.sp,
+                                color = Color.Gray
+                            )
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(0.1f)
+                            .padding(top = 4.dp, bottom = 4.dp),
+                        singleLine = true,
+                        colors = TextFieldDefaults.colors(
+                            unfocusedContainerColor = Color.White,
+                            unfocusedTextColor = Color.White,
+                            focusedContainerColor = Color.White,
+                            focusedTextColor = Color.White,
                         )
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(32.dp),
-                    singleLine = true,
 //                    colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.White)
-                )
+                    )
+                    TextField(
+                        value = o_others, onValueChange = { o_others = it },
+                        label = {
+                            Text(
+                                text = "Others",
+                                fontFamily = robotoFamily,
+                                fontWeight = FontWeight.Medium,
+                                fontSize = 12.sp,
+                                color = Color.Gray
+                            )
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(0.1f)
+                            .padding(top = 4.dp, bottom = 4.dp),
+                        singleLine = true,
+                        colors = TextFieldDefaults.colors(
+                            unfocusedContainerColor = Color.White,
+                            unfocusedTextColor = Color.White,
+                            focusedContainerColor = Color.White,
+                            focusedTextColor = Color.White,
+                        )
+//                    colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.White)
+                    )
+                }
             }
             Column(Modifier.padding(top = 10.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically,
@@ -2120,7 +2178,7 @@ fun Session3_7(controller: NavHostController) {
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun Preview() {
     val controller = rememberNavController()
@@ -2128,7 +2186,7 @@ fun Preview() {
         delay(1200)
         controller.navigate("Session1_2")
     }
-    NavHost(navController = controller, startDestination = "Session3_5") {
+    NavHost(navController = controller, startDestination = "Session1_2") {
         composable("Session1_1") { Session1_1(controller) }
         composable("Session1_2") { Session1_2(controller) }
         composable("Session1_3") { Session1_3(controller) }
