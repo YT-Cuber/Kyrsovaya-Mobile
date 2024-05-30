@@ -49,7 +49,6 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
@@ -2186,7 +2185,7 @@ fun Preview() {
         delay(1200)
         controller.navigate("Session1_2")
     }
-    NavHost(navController = controller, startDestination = "Session1_2") {
+    NavHost(navController = controller, startDestination = "Session2_5") {
         composable("Session1_1") { Session1_1(controller) }
         composable("Session1_2") { Session1_2(controller) }
         composable("Session1_3") { Session1_3(controller) }
